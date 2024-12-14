@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
+import emailRoutes from './routes/email.js';
 
 /* CONFIG */
 const app = express();
@@ -22,6 +23,7 @@ app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 /* ROUTES */
 app.get("/", (req, res) => res.status(200).json({ status: 200, msg: "Hello World!" }));
 app.post("/", (req, res) => res.status(200).json({ status: 200, msg: "Hello World!" }));
+app.use('/email', emailRoutes);
 
 /* MONGOOSE SETUP */
 /* Server PORT */
