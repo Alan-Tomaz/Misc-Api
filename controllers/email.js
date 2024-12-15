@@ -36,11 +36,16 @@ export const sendEmail = async (req, res) => {
             text: message
         };
 
-        transporter.sendMail(mailOptions);
-
-        res.status(200).json({ isError: false });
+        transporter.sendMail(mailOptions, (error, data) => {
+            if (error) {
+                console.log("Error sending email: ", error)
+                return res.status(500).json({ isError: true, error: 5, message: "Error in Email Sent" });
+            }
+            console.log("Message sent: %s", data.messageId);
+            res.status(200).json({ isError: false });
+        });
     } catch (error) {
         console.error("Error to Send Email: ", error);
-        res.status(500).json({ isError: true, error: 5, message: "Internal Mail Error" });
+        res.status(500).json({ isError: true, error: 6, message: "Internal Mail Error" });
     }
 }
