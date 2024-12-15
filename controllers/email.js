@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 
 export const sendEmail = async (req, res) => {
     try {
-        const [name, email, subject, message] = req.body;
+        const { name, email, subject, message } = req.body;
 
         if ((name == null || !name) || (email == null || !email) || (subject == null || !subject) || (message == null || !message)) {
             return res.status(500).json({ isError: true, error: 2, message: "Fill All Forms" });
