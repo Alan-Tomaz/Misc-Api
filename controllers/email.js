@@ -34,7 +34,16 @@ export const sendEmail = async (req, res) => {
             replyTo: email,
             to: "alantomaz.dev@gmail.com",
             subject: `Contato de ${name} - ${subject}`,
-            text: message
+            text: `
+            Você recebeu uma mensagem de contato.
+
+            Nome: ${name}
+            E-mail: ${email}
+            Assunto: ${subject}
+        
+            Mensagem:
+            ${message}
+            `
         };
 
         transporter.sendMail(mailOptions, (error, data) => {
