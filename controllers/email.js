@@ -30,9 +30,10 @@ export const sendEmail = async (req, res) => {
         });
 
         const mailOptions = {
-            from: `"${name}" <${email}>`,
+            from: email,
+            replyTo: email,
             to: "alantomaz.dev@gmail.com",
-            subject: `${subject}`,
+            subject: `Contato de ${name} - ${subject}`,
             text: message
         };
 
