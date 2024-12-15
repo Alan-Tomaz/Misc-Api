@@ -8,6 +8,14 @@ export const sendEmail = async (req, res) => {
             return res.status(500).json({ isError: true, error: 2, message: "Fill All Forms" });
         }
 
+        if (email.length < 8) {
+            return res.status(500).json({ isError: true, error: 3, message: "Email Too Short" });
+        }
+
+        if (message.length < 8) {
+            return res.status(500).json({ isError: true, error: 4, message: "Message Too Short" });
+        }
+
         /* SEND EMAIL WITH NODEMAILER */
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -33,6 +41,6 @@ export const sendEmail = async (req, res) => {
         res.status(200).json({ isError: false });
     } catch (error) {
         console.error("Error to Send Email: ", error);
-        res.status(500).json({ isError: true, error: 3, message: "Internal Mail Error" });
+        res.status(500).json({ isError: true, error: 5, message: "Internal Mail Error" });
     }
 }
