@@ -9,7 +9,7 @@ export const checkCaptcha = async (req, res, next) => {
         );
 
         if (!response.data.success) {
-            console.log(`Invalid Captcha Return, error: ${response.data}`);
+            console.log(`Invalid Captcha Return, error: ${JSON.stringify(response)}`);
             return res.status(400).json({ isError: true, error: 1, message: "Invalid Captcha Return" });
         } else {
             next();
