@@ -41,6 +41,7 @@ export const sendEmail = async (req, res) => {
                 console.log("Error sending email: ", error)
                 return res.status(500).json({ isError: true, error: 5, message: "Error in Email Sent" });
             }
+
             console.log("Message sent: %s", data.messageId);
             res.status(200).json({ isError: false });
         });
