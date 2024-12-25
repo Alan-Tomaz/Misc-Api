@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-const { google } = require("googleapis");
+import { google } from "googleapis";
 
 // OAuth2 Configuration
 const oAuth2Client = new google.auth.OAuth2(
