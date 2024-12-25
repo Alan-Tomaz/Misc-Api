@@ -5,7 +5,7 @@ const { google } = require("googleapis");
 const oAuth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CLIENT_ID,
     process.env.OAUTH_CLIENT_SECRET,
-    "https://misc-api-three.vercel.app/send/email"
+    "https://misc-api-three.vercel.app/email/send"
 );
 
 oAuth2Client.setCredentials({
