@@ -39,7 +39,6 @@ export const sendEmail = async (req, res) => {
             auth: {
                 type: 'OAuth2',
                 user: process.env.MAIL_ADDRESS,
-                pass: process.env.MAIL_PASSWORD,
                 clientId: process.env.OAUTH_CLIENT_ID,
                 clientSecret: process.env.OAUTH_CLIENT_SECRET,
                 refreshToken: process.env.OAUTH_REFRESH_TOKEN,
