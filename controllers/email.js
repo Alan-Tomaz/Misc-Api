@@ -8,7 +8,6 @@ const oAuth2Client = new google.auth.OAuth2(
     "https://misc-api-three.vercel.app/email/send"
 );
 
-
 oAuth2Client.setCredentials({
     refresh_token: process.env.OAUTH_REFRESH_TOKEN, // Refresh token generated
 });
