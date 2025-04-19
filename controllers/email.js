@@ -1,16 +1,4 @@
 import nodemailer from "nodemailer";
-import { google } from "googleapis";
-
-// OAuth2 Configuration
-const oAuth2Client = new google.auth.OAuth2(
-    process.env.OAUTH_CLIENT_ID,
-    process.env.OAUTH_CLIENT_SECRET,
-    "https://misc-api-three.vercel.app/email/send"
-);
-
-oAuth2Client.setCredentials({
-    refresh_token: process.env.OAUTH_REFRESH_TOKEN, // Refresh token generated
-});
 
 export const sendEmail = async (req, res) => {
     try {
@@ -28,21 +16,14 @@ export const sendEmail = async (req, res) => {
             return res.status(500).json({ isError: true, error: 4, message: "Message Too Short" });
         }
 
-        // Get a new access token using the refresh token
-        const accessToken = await oAuth2Client.getAccessToken();
-
-        console.log("Access Token:", accessToken.token);
-
         /* SEND EMAIL WITH NODEMAILER */
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: process.env.HOST,
+            port: process.env.SEND_PORT,
+            secure: false,
             auth: {
-                type: 'OAuth2',
                 user: process.env.MAIL_ADDRESS,
-                clientId: process.env.OAUTH_CLIENT_ID,
-                clientSecret: process.env.OAUTH_CLIENT_SECRET,
-                refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-                accessToken: accessToken.token
+                pass: process.env.MAIL_PASS,
             }
         });
 
