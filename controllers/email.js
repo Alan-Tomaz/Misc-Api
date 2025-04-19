@@ -20,16 +20,15 @@ export const sendEmail = async (req, res) => {
         const transporter = nodemailer.createTransport({
             host: process.env.HOST,
             port: process.env.SEND_PORT,
-            secure: false,
+            secure: true,
             auth: {
                 user: process.env.MAIL_ADDRESS,
                 pass: process.env.MAIL_PASS,
-            }
+            },
         });
 
         const mailOptions = {
-            from: email,
-            replyTo: email,
+            from: `"alantomaz.dev" ${process.env.MAIL_ADDRESS}`,
             to: "alantomaz.dev@gmail.com",
             subject: `Contato de ${name} - ${subject}`,
             text: `
@@ -41,7 +40,12 @@ export const sendEmail = async (req, res) => {
         
             Mensagem:
             ${message}
-            `
+            `,
+            headers: {
+                'X-Priority': '1',
+                'X-MSMail-Priority': 'High',
+                'Importance': 'High'
+            }
         };
 
         transporter.sendMail(mailOptions, (error, data) => {
