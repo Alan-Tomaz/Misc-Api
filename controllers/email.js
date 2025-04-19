@@ -26,7 +26,7 @@ export const sendEmail = async (req, res) => {
                 pass: process.env.MAIL_PASS,
             },
             tls: {
-                rejectUnauthorized: false, // apenas se estiver testando localmente
+                rejectUnauthorized: false,
             },
         });
 
