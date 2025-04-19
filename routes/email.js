@@ -5,6 +5,6 @@ import { checkCaptcha } from '../middlewares/checkCaptcha.js'
 const router = express.Router();
 
 /* Send Email*/
-router.post("/send", sendEmail);
+router.post("/send", checkCaptcha, sendEmail);
 
 export default router;
