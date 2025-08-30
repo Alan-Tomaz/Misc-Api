@@ -26,15 +26,12 @@ export const sendEmail = async (req, res) => {
         }
 
         const emailBody = `
-            Você recebeu uma mensagem de contato.
-
-            Nome: ${name}
-            E-mail: ${email}
-            Assunto: ${subject}
-        
-            Mensagem:
-            ${message}
-            `;
+    <p>Você recebeu uma mensagem de contato.</p>
+    <p><strong>Nome:</strong> ${name}<br>
+    <strong>E-mail:</strong> ${email}<br>
+    <strong>Assunto:</strong> ${subject}</p>
+    <p><strong>Mensagem:</strong><br>${message.replace(/\n/g, '<br>')}</p>
+`;
 
         /* await sendEmailWithNodemailer(HOST, SEND_PORT, MAIL_ADDRESS, MAIL_DESTINATION, MAIL_PASS, name, subject, emailBody); */
         await sendEmailWithResend(RESEND_API_KEY, RESEND_SENDER, MAIL_DESTINATION, name, subject, emailBody)
