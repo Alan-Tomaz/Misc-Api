@@ -1,7 +1,16 @@
-import nodemailer from "nodemailer";
+import { sendEmailWithNodemailer } from "../services/nodemailer.js";
+import { sendEmailWithResend } from "../services/resend.js";
 
 export const sendEmail = async (req, res) => {
     try {
+        const HOST = process.env.HOST;
+        const SEND_PORT = process.env.SEND_PORT;
+        const MAIL_ADDRESS = process.env.MAIL_ADDRESS;
+        const MAIL_DESTINATION = process.env.MAIL_DESTINATION;
+        const MAIL_PASS = process.env.MAIL_PASS;
+        const RESEND_API_KEY = process.env.RESEND_API_KEY;
+        const RESEND_SENDER = process.env.RESEND_SENDER;
+
         const { name, email, subject, message } = req.body;
 
         if ((name == null || !name) || (email == null || !email) || (subject == null || !subject) || (message == null || !message)) {
@@ -16,25 +25,7 @@ export const sendEmail = async (req, res) => {
             return res.status(500).json({ isError: true, error: 4, message: "Message Too Short" });
         }
 
-        /* SEND EMAIL WITH NODEMAILER */
-        const transporter = nodemailer.createTransport({
-            host: process.env.HOST,
-            port: process.env.SEND_PORT,
-            secure: true,
-            auth: {
-                user: process.env.MAIL_ADDRESS,
-                pass: process.env.MAIL_PASS,
-            },
-            tls: {
-                rejectUnauthorized: false,
-            },
-        });
-
-        const mailOptions = {
-            from: `"alantomaz.dev" ${process.env.MAIL_ADDRESS}`,
-            to: "alantomaz.dev@gmail.com",
-            subject: `Contato de ${name} - ${subject}`,
-            text: `
+        const emailBody = `
             Você recebeu uma mensagem de contato.
 
             Nome: ${name}
@@ -43,25 +34,19 @@ export const sendEmail = async (req, res) => {
         
             Mensagem:
             ${message}
-            `,
-            headers: {
-                'X-Priority': '1',
-                'X-MSMail-Priority': 'High',
-                'Importance': 'High'
-            }
-        };
+            `;
 
-        transporter.sendMail(mailOptions, (error, data) => {
-            if (error) {
-                console.log("Error sending email: ", error)
-                return res.status(500).json({ isError: true, error: 5, message: "Error in Email Sent" });
-            }
+        /* await sendEmailWithNodemailer(HOST, SEND_PORT, MAIL_ADDRESS, MAIL_DESTINATION, MAIL_PASS, name, subject, emailBody); */
+        await sendEmailWithResend(RESEND_API_KEY, RESEND_SENDER, MAIL_DESTINATION, name, subject, emailBody)
 
-            console.log("Message sent: %s", data.messageId);
-            res.status(200).json({ isError: false });
-        });
+        res.status(200).json({ isError: false });
+
     } catch (error) {
+        if (error.error && error.error === 5) {
+            console.log("Error sending email: ", error)
+            return res.status(500).json({ isError: true, error: 5, message: "Error in Email Sent" });
+        }
         console.error("Error to Send Email: ", error);
-        res.status(500).json({ isError: true, error: 6, message: "Internal Mail Error" });
+        return res.status(500).json({ isError: true, error: 6, message: "Internal Mail Error" });
     }
 }
